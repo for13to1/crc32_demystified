@@ -54,11 +54,13 @@ uint32_t crc32_formula_normal(const uint32_t POLY, size_t len, const void *data)
 
     while (len--) {
         crc = crc ^ (reverse[*buffer++] << 24);
+        // 将取出的字节左移 24 位到高 8 位，低 24 位为 0；
+        // 与 crc 异或，相当于本次只有高 8 位为有效计算，低 24 位不变
         for (int bit = 0; bit < 8; bit++) {
-            if (crc & (1L << 31))
-                crc = (crc << 1) ^ POLY;
+            if (crc & (1L << 31))        // 最高位为 1
+                crc = (crc << 1) ^ POLY; // crc 左移 1 位，再与 POLY 异或
             else
-                crc = (crc << 1);
+                crc = (crc << 1);        // 只左移 1 位
         }
     }
     return reflect32(~crc);
