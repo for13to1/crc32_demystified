@@ -9,10 +9,10 @@ Copyleft (C) 2017
 */
 
 // Global
-    // Before using must first call:
-    //     reverse_init()
-    // NOTE: If you're thrashing the L1 cache, change to uint8_t
-    uint32_t reverse[ 256 ]; // 8-bit reverse bit look-up table
+// Before using must first call:
+//     reverse_init()
+// NOTE: If you're thrashing the L1 cache, change to uint8_t
+uint32_t reverse[256]; // 8-bit reverse bit look-up table
 
 // Utility
 
@@ -34,45 +34,37 @@ Copyleft (C) 2017
    @param  {uint32_t} x - value to bit-reverse
    @return {uint32_t}   - value bit reversed
 */
-    // ========================================================================
-    uint32_t reflect32( const uint32_t x )
-    {
-        uint32_t bits = 0;
-        uint32_t mask = x;
+// ========================================================================
+uint32_t reflect32(const uint32_t x) {
+    uint32_t bits = 0;
+    uint32_t mask = x;
 
-        for( int i = 0; i < sizeof(x)*8; i++ )
-        {
-            bits <<= 1;
-            if( mask & 1 )
-                bits |= 1;
-            mask >>= 1;
-        }
-
-        return bits;
+    for (int i = 0; i < sizeof(x) * 8; i++) {
+        bits <<= 1;
+        if (mask & 1)
+            bits |= 1;
+        mask >>= 1;
     }
 
-    /** Table-Lookup
-     * @param  {uint32_t} x - value to bit-reverse
-     * @return {uint32_t}     value bit reversed
-     */
-    // ========================================================================
-    uint32_t reverse32( const uint32_t x )
-    {
-        return 0
-        | reverse[ (x >> 24) & 0xFF ] <<  0L
-        | reverse[ (x >> 16) & 0xFF ] <<  8L
-        | reverse[ (x >>  8) & 0xFF ] << 16L
-        | reverse[ (x >>  0) & 0xFF ] << 24L;
-    }
+    return bits;
+}
 
-    // Table-Lookup
-    // ========================================================================
-    void reverse_init()
-    {
-        for( int byte = 0; byte < 256; byte++ )
-            reverse[ byte ] = (reflect32( byte ) >> 24) & 0xFF;
+/** Table-Lookup
+ * @param  {uint32_t} x - value to bit-reverse
+ * @return {uint32_t}     value bit reversed
+ */
+// ========================================================================
+uint32_t reverse32(const uint32_t x) {
+    return 0 | reverse[(x >> 24) & 0xFF] << 0L | reverse[(x >> 16) & 0xFF] << 8L | reverse[(x >> 8) & 0xFF] << 16L |
+           reverse[(x >> 0) & 0xFF] << 24L;
+}
 
-//      for( int byte = 0; byte < 256; byte++ )
-//          printf( "Byte: %02X -> %08X -> %02X\n", byte, reflect32( byte ), (reflect32( byte ) >> 24) & 0xFF );
-    }
+// Table-Lookup
+// ========================================================================
+void reverse_init() {
+    for (int byte = 0; byte < 256; byte++)
+        reverse[byte] = (reflect32(byte) >> 24) & 0xFF;
 
+    //      for( int byte = 0; byte < 256; byte++ )
+    //          printf( "Byte: %02X -> %08X -> %02X\n", byte, reflect32( byte ), (reflect32( byte ) >> 24) & 0xFF );
+}

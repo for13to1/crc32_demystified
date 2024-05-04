@@ -66,7 +66,8 @@ CC=g++
 C_INC=-Isrc/
 C_FLAGS=$(C_INC)
 
-bin: bin_dir bin/crc32 bin/enum bin/tables bin/trace bin/crc33
+# bin: bin_dir bin/crc32 bin/enum bin/tables bin/trace bin/crc33
+bin: bin_dir bin/crc32 bin/enum bin/tables bin/trace
 
 bin_dir:
 	@mkdir -p bin
@@ -83,8 +84,8 @@ bin/tables: src/tables_crc32.cpp $(DEP_H)
 bin/trace: src/trace_crc32.cpp $(DEP_H)
 	$(CC) $(C_FLAGS) $< -o $@
 
-bin/crc33: src/crc33.cpp $(DEP_H)
-	$(CC) $(C_FLAGS) $< -o $@
+# bin/crc33: src/crc33.cpp $(DEP_H)
+# 	$(CC) $(C_FLAGS) $< -o $@
 
 # === Java ===
 
